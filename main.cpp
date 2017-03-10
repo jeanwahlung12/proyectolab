@@ -51,10 +51,13 @@ int main(){//inicio del main
 							char marcaconsola;
 							int estado;
 							int numserie;
+							double precio;
 							cout << "ingrese el año de salida :"<< endl;
 							cin >> anosalida;
 							cout << "ingrese el estado del 1-10: " << endl;
 							cin >> estado;
+							cout << " ingrese el precio de la consola:"<< endl;
+							cin >> precio;
 							numserie =contnumserieconsolas;
 							contnumserieconsolas++;
 							cout << "ingrese la marca \n 1/Microsft \n 2/Sony \n 3/nintendo :"<< endl;
@@ -71,7 +74,7 @@ int main(){//inicio del main
 									else if (modelo=="3"){
 										modelo = "Xboxone";
 									}
-									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie);
+									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,precio);
 									 consoles.push_back (microsoftconsole);
 							}// fin if de marca consola ==1
 							else if(marcaconsola=='2'){// inicio de marca consola ==2
@@ -95,7 +98,7 @@ int main(){//inicio del main
 								else if(modelo == "6"){// inicio  de if modelo ==6
 									modelo = "Psvita";
 								}// fin de if modelo ==6
-									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie);
+									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie,precio);
 									consoles.push_back (Sonyconsola);
 							}// fin marca consola ==2
 							else if(marcaconsola=='3'){// inicio marcaconsola ==3
@@ -131,7 +134,7 @@ int main(){//inicio del main
 								else if(modelo == "10"){//inicio modelo ==10
 									modelo = "Nintendo New 3DS";
 								}// fin modelo == 10
-								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie);
+								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie,precio);
 								consoles.push_back (nintendoconsola);
 							}// fin marca consola ==3
 
@@ -317,6 +320,9 @@ int main(){//inicio del main
 							char marcaconsola;
 							int estado;
 							int numserie;
+							double precio;
+							cout << "ingrese el precio : "<< endl;
+							cin >> precio;
 							cout << "ingrese el año de salida :"<< endl;
 							cin >> anosalida;
 							cout << "ingrese el estado del 1-10: " << endl;
@@ -337,7 +343,7 @@ int main(){//inicio del main
 									else if (modelo=="3"){
 										modelo = "Xboxone";
 									}
-									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie);
+									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,precio);
 									 consoles.push_back (microsoftconsole);
 							}// fin if de marca consola ==1
 							else if(marcaconsola=='2'){// inicio de marca consola ==2
@@ -361,7 +367,7 @@ int main(){//inicio del main
 								else if(modelo == "6"){// inicio  de if modelo ==6
 									modelo = "Psvita";
 								}// fin de if modelo ==6
-									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie);
+									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie,precio);
 									consoles.push_back (Sonyconsola);
 							}// fin marca consola ==2
 							else if(marcaconsola=='3'){// inicio marcaconsola ==3
@@ -397,7 +403,7 @@ int main(){//inicio del main
 								else if(modelo == "10"){//inicio modelo ==10
 									modelo = "Nintendo New 3DS";
 								}// fin modelo == 10
-								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie);
+								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie,precio);
 								consoles.push_back (nintendoconsola);
 							}// fin marca consola ==3
 
@@ -551,6 +557,72 @@ int main(){//inicio del main
 				}// fin if de opaccion ==1
 				else if (opaccion=='2'){// inicio if de opaccion==2
 
+					bool validateventa = true;
+					while(validateventa){// inicio while validate ventas
+						string nombrecliente;
+						string nomusuario= selluser->getnombre();
+						cout << "ingrese el nombre del cliente: "<< endl;
+						cin >> nombrecliente;
+						double subtotal=0;
+						vector<consolas*> vconsolas;
+						vector <videojuegos*> vvideojuegos;
+						string tipocompra;
+						cout << "compra de : \n 1/consolas \n 2/videojuegos"<< endl;
+						cin >>tipocompra;
+						if(tipocompra=="1"){
+							cout << "---------- Las Consolas de venta son--------"<< endl;
+							for (int i = 0; i < consoles.size(); ++i){
+								cout << i<<") " << consoles[i]->getmodelo() << endl;
+							}
+							int position;
+
+							cout << "ingrese la posicion en la que se encuetra el articulo que quiere comprar:"<< endl;
+							cin >> position;
+							while (position>consoles.size()){
+								cout << "la posicion tiene que ser valida ingresela de nuevo: "<< endl;
+								cin >>position;
+							}
+							vconsolas.push_back(consoles[position]);
+
+						}
+						else if(tipocompra=="2"){
+							cout << "---------- Los Juegos de Venta son ---------" << endl;
+							for (int i = 0; i < videogames.size(); ++i){
+								cout << i<< ") " << videogames[i]->getnombre() << endl;
+							}
+							cout << " ingrese la posicion en la que se encuentra el articulo que quiere comprar: "<< endl;
+							int position;
+							cin>> position;
+							while(position>videogames.size()){
+								cout << " la posicion tiene que ser valilda ingrese de nuevo: "<< endl;
+								cin >>position;	
+							}
+							vvideojuegos.push_back(videogames[position]);
+						}
+						string articulo;
+						cout << "desea comprar otro articulo: S/N"<< endl;
+						cin >> articulo;
+						if(articulo=="n" || articulo=="N"){
+							validateventa = false;
+							venta* sell = new venta();
+							sell->setnombrecliente(nombrecliente);
+							sell->setuser(selluser->getnombre());
+							sell->sethorafinalizada(gethora());
+
+							for (int i = 0; i < vconsolas.size(); ++i){
+								subtotal+=vconsolas[i]->getprecio();
+								sell->setconsoles(vconsolas[i]);
+							}
+							for (int i = 0; i < vvideojuegos.size(); ++i){
+								subtotal+=vvideojuegos[i]->getprecio();
+								sell->setvideogames(vvideojuegos[i]);
+
+							}
+							sell->setsubtotal(subtotal);
+
+						}
+
+					}// fin del while validate ventas
 
 				}//fin if de opaccion==2
 				string finalize;
@@ -559,6 +631,8 @@ int main(){//inicio del main
 				if (finalize=="s"|| finalize=="S"){
 					opusuario2Autentic=false;
 				}
+				selluser->sethorasalida(gethora());
+				
 			}// fin while opusuario2autentic
 		}// fin del if de opusuario2
 		else

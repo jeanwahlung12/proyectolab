@@ -12,7 +12,7 @@ class venta{
 		string nombrecliente;
 		vector<videojuegos*> videogames;
 		vector<consolas*> consoles;
-		usuario* user;
+		string user;
 		string horafinalizada;
 		double subtotal;
 	public:
@@ -21,7 +21,7 @@ class venta{
 		string getnombrecliente();
 		videojuegos* getvideogames(int);
 		consolas* getconsoles(int);
-		usuario* getuser();
+		string getuser();
 		string gethorafinalizada();
 		double getsubtotal();
 
@@ -29,7 +29,7 @@ class venta{
 		void setnombrecliente(string);
 		void setvideogames(videojuegos*);
 		void setconsoles(consolas*);
-		void setuser(usuario*);
+		void setuser(string);
 		void sethorafinalizada(string);
 		void setsubtotal(double);
 		

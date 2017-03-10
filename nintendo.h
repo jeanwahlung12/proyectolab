@@ -5,6 +5,6 @@ using namespace std;
 
 class nintendo : public consolas{
 	public:
-		nintendo(int,string,int,int);
+		nintendo(int,string,int,int,double);
 		~nintendo();
 };

@@ -22,7 +22,7 @@ void venta::setconsoles(consolas* con){
 	 consoles.push_back(con);
 
 }
-void venta::setuser(usuario* use){
+void venta::setuser(string use){
 	user=use;
 }
 void venta::sethorafinalizada(string hora){
@@ -38,13 +38,14 @@ string venta::getnombrecliente(){
 
 }
 
+
 videojuegos* venta::getvideogames(int num){
 	return videogames[num];
 }
 consolas* venta::getconsoles(int num){
 	return consoles[num];
 }
-usuario* venta::getuser(){
+string venta::getuser(){
 	return user;
 }
 string venta:: gethorafinalizada(){

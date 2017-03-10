@@ -7,15 +7,21 @@ consolas:: consolas(){
 	modelo="";
 	estado=0;
 	numserie=0;
+	precio = 0;
 }
 
-consolas:: consolas(int ano, string model,int estad,int num){
+consolas:: consolas(int ano, string model,int estad,int num,double precio){
 	anosalida=ano;
 	modelo=model;
 	estado = estad;
 	numserie = num;
 }
-
+void consolas::setprecio(double prize){
+	precio=prize;
+}
+double consolas::getprecio(){
+	return precio;
+}
 void consolas::setanosalida(int anio){
 	while(anio<0){
 		cout << "Error tiene que ser mayor a 0" << endl;
