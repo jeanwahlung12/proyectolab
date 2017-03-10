@@ -6,7 +6,7 @@ usuario::usuario(){
 	nombre="";
 }
 
-usuario:usuario(string nom){
+usuario::usuario(string nom){
 	nombre=nom;
 }
 void usuario::setnombre(string nom){
