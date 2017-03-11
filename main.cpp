@@ -27,12 +27,12 @@
 # include <fstream>
 # include <sys/types.h>
 # include <sys/stat.h>
-void creardirectorio();
-void creararchivo(venta*,int ,int);
-void escribir(string, venta*,int,int);
-void creardirectorio2();
-void creararchivo2(usuario*,int,int,string,string);
-void escribir2(string,usuario*,int,int,string,string);
+void creardirectorio();//crea carpeta de ventas
+void creararchivo(venta*,int ,int);//crea un archivo de ventas
+void escribir(string, venta*,int,int);//escribe en el archivo dentro de ventas
+void creardirectorio2();// crea carpeta de usuarios
+void creararchivo2(usuario*,int,int,string,string);// crea archivo de usuario
+void escribir2(string,usuario*,int,int,string,string);// escribe en el archivo de usuario
 
 string gethora();
 using namespace std;
