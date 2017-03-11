@@ -20,12 +20,27 @@
 #include "microsoft.h"
 #include <iostream>	
 #include <string>
+#include <sstream>
 #include <vector>
+#include <dirent.h>
+# include <stdlib.h>
+# include <fstream>
+# include <sys/types.h>
+# include <sys/stat.h>
+void creardirectorio();
+void creararchivo(venta*,int ,int);
+void escribir(string, venta*,int,int);
+void creardirectorio2();
+void creararchivo2(usuario*,int,int,string,string);
+void escribir2(string,usuario*,int,int,string,string);
+
 string gethora();
 using namespace std;
 
 int main(){//inicio del main
+	creardirectorio();
 	vector<consolas*> consoles;
+
 	vector <videojuegos*> videogames;
 	usuario* adminuser = new usuarioadmin("jean","access");
 	int contnumseriejuegos= videogames.size();
@@ -74,8 +89,9 @@ int main(){//inicio del main
 									else if (modelo=="3"){
 										modelo = "Xboxone";
 									}
+									cout << "el precio es :" << precio <<endl;
 									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,precio);
-									 consoles.push_back (microsoftconsole);
+									consoles.push_back (microsoftconsole);
 							}// fin if de marca consola ==1
 							else if(marcaconsola=='2'){// inicio de marca consola ==2
 								cout << "ingrese el modelo 1/Play Station 1 \n 2/ Play Station \n 3/Play Station 3 \n 4/ Play Station 4\n 5/ PSP \n 6/ Psvita "<< endl;
@@ -296,13 +312,18 @@ int main(){//inicio del main
 		}// fin del if de opusuario1 
 		else if(opusuario=='2'){// inicio if del opusuario2
 			bool opusuario2Autentic=true;
+			string nombre;
+			int moneycreated=0;
+			string entrada = gethora();
+			string salida;
+			int contarticulos=0;
+			cout << "ingrese su nombre: "<< endl;
+			cin >> nombre;
 			while (opusuario2Autentic){// inicio while opusuario2autentic
-				string nombre;
+				
 				string horae=gethora();
 				string horasalida;
-				cout << "ingrese su nombre: "<< endl;
-				cin >> nombre;
-
+				
 				usuariovendedor* selluser = new usuariovendedor(nombre,horae,"");
 				
 				char opaccion;
@@ -320,9 +341,9 @@ int main(){//inicio del main
 							char marcaconsola;
 							int estado;
 							int numserie;
-							double precio;
+							double prizes;
 							cout << "ingrese el precio : "<< endl;
-							cin >> precio;
+							cin >> prizes;
 							cout << "ingrese el año de salida :"<< endl;
 							cin >> anosalida;
 							cout << "ingrese el estado del 1-10: " << endl;
@@ -331,6 +352,7 @@ int main(){//inicio del main
 							contnumserieconsolas++;
 							cout << "ingrese la marca \n 1/Microsft \n 2/Sony \n 3/nintendo :"<< endl;
 							cin >> marcaconsola;
+
 							if(marcaconsola=='1'){// inicio if de marca consola ==1
 									cout << "ingrese el modelo 1/Xbox \n 2/Xbox360 \n 3/Xboxone" << endl;
 									cin >> modelo;
@@ -343,7 +365,7 @@ int main(){//inicio del main
 									else if (modelo=="3"){
 										modelo = "Xboxone";
 									}
-									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,precio);
+									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,prizes);
 									 consoles.push_back (microsoftconsole);
 							}// fin if de marca consola ==1
 							else if(marcaconsola=='2'){// inicio de marca consola ==2
@@ -367,7 +389,7 @@ int main(){//inicio del main
 								else if(modelo == "6"){// inicio  de if modelo ==6
 									modelo = "Psvita";
 								}// fin de if modelo ==6
-									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie,precio);
+									sony* Sonyconsola = new sony(anosalida,modelo,estado,numserie,prizes);
 									consoles.push_back (Sonyconsola);
 							}// fin marca consola ==2
 							else if(marcaconsola=='3'){// inicio marcaconsola ==3
@@ -403,7 +425,7 @@ int main(){//inicio del main
 								else if(modelo == "10"){//inicio modelo ==10
 									modelo = "Nintendo New 3DS";
 								}// fin modelo == 10
-								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie,precio);
+								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie,prizes);
 								consoles.push_back (nintendoconsola);
 							}// fin marca consola ==3
 
@@ -556,7 +578,8 @@ int main(){//inicio del main
 
 				}// fin if de opaccion ==1
 				else if (opaccion=='2'){// inicio if de opaccion==2
-
+					vector<consolas*> vconsolas;
+					vector <videojuegos*> vvideojuegos;
 					bool validateventa = true;
 					while(validateventa){// inicio while validate ventas
 						string nombrecliente;
@@ -564,8 +587,7 @@ int main(){//inicio del main
 						cout << "ingrese el nombre del cliente: "<< endl;
 						cin >> nombrecliente;
 						double subtotal=0;
-						vector<consolas*> vconsolas;
-						vector <videojuegos*> vvideojuegos;
+						
 						string tipocompra;
 						cout << "compra de : \n 1/consolas \n 2/videojuegos"<< endl;
 						cin >>tipocompra;
@@ -583,6 +605,7 @@ int main(){//inicio del main
 								cin >>position;
 							}
 							vconsolas.push_back(consoles[position]);
+							consoles.erase (consoles.begin()+ (position-1));
 
 						}
 						else if(tipocompra=="2"){
@@ -598,6 +621,7 @@ int main(){//inicio del main
 								cin >>position;	
 							}
 							vvideojuegos.push_back(videogames[position]);
+							videogames.erase (videogames.begin()+ (position-1));
 						}
 						string articulo;
 						cout << "desea comprar otro articulo: S/N"<< endl;
@@ -608,17 +632,29 @@ int main(){//inicio del main
 							sell->setnombrecliente(nombrecliente);
 							sell->setuser(selluser->getnombre());
 							sell->sethorafinalizada(gethora());
-
-							for (int i = 0; i < vconsolas.size(); ++i){
-								subtotal+=vconsolas[i]->getprecio();
-								sell->setconsoles(vconsolas[i]);
-							}
-							for (int i = 0; i < vvideojuegos.size(); ++i){
+							int contconsolas=0;
+							int contvideojuegos=0;
+							if(videogames.size()>0){
+								for (int i = 0; i < vvideojuegos.size(); ++i){
 								subtotal+=vvideojuegos[i]->getprecio();
+								moneycreated+=vconsolas[i]->getprecio();
+								contarticulos++;
 								sell->setvideogames(vvideojuegos[i]);
-
+								contvideojuegos++;
+								
+								}
+							}
+							if(consoles.size()>0){
+								for (int i = 0; i < vconsolas.size(); ++i){
+								subtotal+=vconsolas[i]->getprecio();
+								moneycreated+=vconsolas[i]->getprecio();
+								contarticulos++;
+								sell->setconsoles(vconsolas[i]);
+								contconsolas++;
+								}
 							}
 							sell->setsubtotal(subtotal);
+							creararchivo(sell,contconsolas,contvideojuegos);
 
 						}
 
@@ -630,8 +666,12 @@ int main(){//inicio del main
 				cin >> finalize;
 				if (finalize=="s"|| finalize=="S"){
 					opusuario2Autentic=false;
+					selluser->sethorasalida(gethora());
+					creardirectorio2();
+					creararchivo2(selluser, moneycreated,contarticulos, entrada, gethora());
+
 				}
-				selluser->sethorasalida(gethora());
+				
 				
 			}// fin while opusuario2autentic
 		}// fin del if de opusuario2
@@ -651,3 +691,146 @@ string gethora(){
  	return hora;
 
 } 
+
+void creararchivo(venta* sell,int contador, int contador2){
+	
+
+	
+	
+		string ruta = "log_ventas/";
+		
+		
+		string archivo = gethora()+".log";
+		
+		string rutatotal= ruta+archivo;
+		FILE* arch;
+		
+		if(arch = fopen(rutatotal.c_str(),"a"))
+			cout << " el archivo a sido creado correctamente" << endl;
+		
+		escribir(archivo,sell,contador,contador2);	
+
+		
+
+}
+
+void creardirectorio2(){
+	
+	string ruta="";
+	string carpeta ="Usuarios_log";
+	string rutatotal;
+	rutatotal=ruta+carpeta;
+	if (mkdir(rutatotal.c_str(),0777) ==0)
+		cout << " la carpeta a sido creada correctamente " << endl;
+	
+}
+
+void creardirectorio(){
+	
+	string ruta="";
+	string carpeta ="log_ventas";
+	string rutatotal;
+	rutatotal=ruta+carpeta;
+	if (mkdir(rutatotal.c_str(),0777) ==0)
+		cout << " la carpeta a sido creada correctamente " << endl;
+	
+}
+
+void creararchivo2(usuario* user,int money,int contarticulos,string entrada, string salida){
+	
+
+	
+	
+		string ruta = "Usuarios_log/";
+		
+		
+		string archivo = user->getnombre()+"_"+gethora()+".log";
+		
+		string rutatotal= ruta+archivo;
+		FILE* arch;
+		
+		if(arch = fopen(rutatotal.c_str(),"a"))
+			cout << " el archivo a sido creado correctamente" << endl;
+		
+		escribir2(archivo,user,money,contarticulos,entrada,salida);	
+
+		
+
+}
+	
+void escribir(string ruta, venta* sells,int contador, int contador2){
+	ofstream archivo;
+	stringstream stringStream;
+	string myString;
+	stringStream << "./log_ventas/" << ruta;
+	myString = stringStream.str();
+	archivo.open(myString.c_str());
+
+
+	if(archivo.fail()){
+		cout << " no se pudo abrir " << endl;
+		exit(1);
+	}
+	archivo << " 			Abby & Jean GameStore	" << endl<< endl;;
+	archivo << "Fecha y Hora : "<< sells->gethorafinalizada() << endl;
+	archivo << "Usuario:" << sells->getuser() << endl;
+	archivo << "Nombre cliente: " << sells->getnombrecliente()<< endl << endl;
+	archivo << "Cantidad de articulos :" << contador+contador2 << endl;
+	for (int i = 0; i < contador; ++i){
+
+		archivo << " Nombre De Articulo :" << i << sells->getconsoles(i)->getmodelo() << "      Precio: "<< sells->getconsoles(i)->getprecio() << endl;
+
+	}
+
+	for (int i = 0; i < contador2; ++i){
+
+		archivo << " Nombre De Articulo :" << i << sells->getvideogames(i)->getnombre() << "      Precio: "<< sells->getvideogames(i)->getprecio() << endl ;
+
+
+
+
+	}
+	double total = (sells->getsubtotal() *0.15) + sells->getsubtotal();
+	archivo << " " << endl;
+	archivo << "Subtotal : " << sells->getsubtotal()<< endl;
+	archivo << "Impuesto (15) porciento "<< endl;
+	archivo << "total : " << total << endl;
+
+	archivo.close();
+
+
+}
+
+
+
+void escribir2(string ruta, usuario* user,int money,int contarticulos,string entrada, string salida){
+	ofstream archivo;
+	stringstream stringStream;
+	string myString;
+	stringStream << "./Usuarios_log/" << ruta;
+	myString = stringStream.str();
+	archivo.open(myString.c_str());
+
+
+	if(archivo.fail()){
+		cout << " no se pudo abrir " << endl;
+		exit(1);
+	}
+	archivo << " 			Abby & Jean GameStore	" << endl << endl;
+	archivo << "Nombre : "<< user->getnombre() << endl;
+	archivo << "Hora Entrada:" << entrada<< endl;
+	archivo << "Hora Salida: " << salida << endl << endl;
+	
+	
+	archivo << "Cantidad de Articulos vendidos :" << contarticulos << endl;
+	archivo << "Dinero Generado :" << money << endl;
+	
+
+	archivo.close();
+
+
+}
+
+
+
+

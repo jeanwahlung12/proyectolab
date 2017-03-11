@@ -13,15 +13,15 @@ class consolas{
 			consolas();
 			consolas(int,string,int,int,double);//constructor sobrecargado
 			//setters
+			void setprecio(double);
 			void setanosalida(int);
 			void setmodelo(string);
 			void setestado(int);
 			void setnumserie(int);
-			void setprecio(double);
 			//getters
+			double getprecio();
 			int getanosalida();
 			string getmodelo();
 			int getestado();
 			int getnumserie();
-			double getprecio();
 };
