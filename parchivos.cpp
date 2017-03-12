@@ -57,7 +57,7 @@ void creardirectorio(){
 }
 void escribir(){
 	ofstream archivo;
-	archivo.open("jean21assa.txt",ios::out);
+	archivo.open("prueba.txt",ios::out);
 
 
 	if(archivo.fail()){
@@ -70,7 +70,7 @@ void escribir(){
 
 int main()
 {
-creardirectorio();
+//creardirectorio();
 	escribir();
 	return 0;
 }

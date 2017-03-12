@@ -29,16 +29,18 @@
 # include <sys/stat.h>
 void creardirectorio();//crea carpeta de ventas
 void creararchivo(venta*,int ,int);//crea un archivo de ventas
-void escribir(string, venta*,int,int);//escribe en el archivo dentro de ventas
+void escribir(string,venta*,int,int);//escribe en el archivo dentro de ventas
 void creardirectorio2();// crea carpeta de usuarios
 void creararchivo2(usuario*,int,int,string,string);// crea archivo de usuario
 void escribir2(string,usuario*,int,int,string,string);// escribe en el archivo de usuario
+
 
 string gethora();
 using namespace std;
 
 int main(){//inicio del main
 	creardirectorio();
+	
 	vector<consolas*> consoles;
 
 	vector <videojuegos*> videogames;
@@ -634,27 +636,29 @@ int main(){//inicio del main
 							sell->sethorafinalizada(gethora());
 							int contconsolas=0;
 							int contvideojuegos=0;
-							if(videogames.size()>0){
-								for (int i = 0; i < vvideojuegos.size(); ++i){
+							
+							for (int i = 0; i < vvideojuegos.size(); ++i){
 								subtotal+=vvideojuegos[i]->getprecio();
-								moneycreated+=vconsolas[i]->getprecio();
+								
 								contarticulos++;
 								sell->setvideogames(vvideojuegos[i]);
 								contvideojuegos++;
 								
-								}
 							}
-							if(consoles.size()>0){
-								for (int i = 0; i < vconsolas.size(); ++i){
+							
+							
+							for (int i = 0; i < vconsolas.size(); ++i){
 								subtotal+=vconsolas[i]->getprecio();
-								moneycreated+=vconsolas[i]->getprecio();
+								
 								contarticulos++;
 								sell->setconsoles(vconsolas[i]);
 								contconsolas++;
-								}
 							}
+							moneycreated=subtotal;
 							sell->setsubtotal(subtotal);
+							
 							creararchivo(sell,contconsolas,contvideojuegos);
+
 
 						}
 
@@ -696,8 +700,7 @@ void creararchivo(venta* sell,int contador, int contador2){
 	
 
 	
-	
-		string ruta = "log_ventas/";
+	string ruta = "log_ventas/";
 		
 		
 		string archivo = gethora()+".log";
@@ -707,8 +710,7 @@ void creararchivo(venta* sell,int contador, int contador2){
 		
 		if(arch = fopen(rutatotal.c_str(),"a"))
 			cout << " el archivo a sido creado correctamente" << endl;
-		
-		escribir(archivo,sell,contador,contador2);	
+		escribir(archivo, sell,contador,contador2);	
 
 		
 
@@ -734,6 +736,7 @@ void creardirectorio(){
 	if (mkdir(rutatotal.c_str(),0777) ==0)
 		cout << " la carpeta a sido creada correctamente " << endl;
 	
+	
 }
 
 void creararchivo2(usuario* user,int money,int contarticulos,string entrada, string salida){
@@ -753,55 +756,11 @@ void creararchivo2(usuario* user,int money,int contarticulos,string entrada, str
 			cout << " el archivo a sido creado correctamente" << endl;
 		
 		escribir2(archivo,user,money,contarticulos,entrada,salida);	
-
+		
 		
 
 }
 	
-void escribir(string ruta, venta* sells,int contador, int contador2){
-	ofstream archivo;
-	stringstream stringStream;
-	string myString;
-	stringStream << "./log_ventas/" << ruta;
-	myString = stringStream.str();
-	archivo.open(myString.c_str());
-
-
-	if(archivo.fail()){
-		cout << " no se pudo abrir " << endl;
-		exit(1);
-	}
-	archivo << " 			Abby & Jean GameStore	" << endl<< endl;;
-	archivo << "Fecha y Hora : "<< sells->gethorafinalizada() << endl;
-	archivo << "Usuario:" << sells->getuser() << endl;
-	archivo << "Nombre cliente: " << sells->getnombrecliente()<< endl << endl;
-	archivo << "Cantidad de articulos :" << contador+contador2 << endl;
-	for (int i = 0; i < contador; ++i){
-
-		archivo << " Nombre De Articulo :" << i << sells->getconsoles(i)->getmodelo() << "      Precio: "<< sells->getconsoles(i)->getprecio() << endl;
-
-	}
-
-	for (int i = 0; i < contador2; ++i){
-
-		archivo << " Nombre De Articulo :" << i << sells->getvideogames(i)->getnombre() << "      Precio: "<< sells->getvideogames(i)->getprecio() << endl ;
-
-
-
-
-	}
-	double total = (sells->getsubtotal() *0.15) + sells->getsubtotal();
-	archivo << " " << endl;
-	archivo << "Subtotal : " << sells->getsubtotal()<< endl;
-	archivo << "Impuesto (15) porciento "<< endl;
-	archivo << "total : " << total << endl;
-
-	archivo.close();
-
-
-}
-
-
 
 void escribir2(string ruta, usuario* user,int money,int contarticulos,string entrada, string salida){
 	ofstream archivo;
@@ -830,6 +789,54 @@ void escribir2(string ruta, usuario* user,int money,int contarticulos,string ent
 
 
 }
+
+
+
+
+void escribir(string ruta, venta* sell,int cont,int cont2){
+	ofstream archivo;
+	stringstream stringStream;
+	string myString;
+	stringStream << "./log_ventas/" << ruta;
+	myString = stringStream.str();
+	archivo.open(myString.c_str());
+
+
+	if(archivo.fail()){
+		cout << " no se pudo abrir " << endl;
+		exit(1);
+	}
+	archivo << " 			Abby & Jean GameStore	" << endl << endl;
+	archivo << "Fecha y Hora : "<< sell->gethorafinalizada() << endl;
+	archivo << "Usuario:" << sell->getuser() << endl;
+	archivo << "Nombre cliente: " << sell->getnombrecliente()<< endl << endl;
+	archivo << "Cantidad de articulos :" << cont+cont2 << endl;
+	for (int i = 0; i < cont; ++i){
+
+		archivo << " Nombre De Articulo :" << i << sell->getconsoles(i)->getmodelo() << "      Precio: "<< sell->getconsoles(i)->getprecio() << endl;
+
+	}
+
+	for (int i = 0; i < cont2; ++i){
+
+		archivo << " Nombre De Articulo :" << i << sell->getvideogames(i)->getnombre() << "      Precio: "<< sell->getvideogames(i)->getprecio() << endl ;
+
+
+
+
+	}
+	double total = (sell->getsubtotal() *0.15) + sell->getsubtotal();
+	archivo << " " << endl;
+	archivo << "Subtotal : " << sell->getsubtotal()<< endl;
+	archivo << "Impuesto (15) porciento "<< endl;
+	archivo << "total : " << total << endl;
+	
+
+	archivo.close();
+
+
+}
+
 
 
 
