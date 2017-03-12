@@ -307,7 +307,46 @@ int main(){//inicio del main
 
  			}// fin del opaccion ==2
  			else if(opaccion=='3'){// inicio de if de opaccion ==3
-
+ 				char opeliminar;
+ 				bool eliminar=true;
+ 				while(eliminar){
+ 					cout << "eliminar :\n 1/consola \n 2/videojuego :" ;
+ 					cin >> opeliminar;
+ 					cout << "" << endl;
+ 					if(opeliminar=='1'){
+ 						for (int i = 0; i < consoles.size(); ++i){
+ 							cout << i<<")"<<consoles[i]->getmodelo() << endl;
+ 						}
+ 						int pos;
+ 						cout << "ingrese la posicion que desea eliminar:"<< endl;
+ 						cin >> pos;
+ 						while(pos>consoles.size()){
+ 							cout << "ingrese la posicion que desea eliminar:"<< endl;
+ 							cin >> pos;
+ 						}
+ 						consoles.erase (consoles.begin()+(pos-1));
+ 					}
+ 					else if(opeliminar=='2'){
+ 						cout << "" << endl;
+ 						for (int i = 0; i < videogames.size(); ++i){
+ 							cout << i<<")"<<videogames[i]->getnombre() << endl;
+ 						}
+ 						int pos;
+ 						cout << "ingrese la posicion que desea eliminar:"<< endl;
+ 							cin >> pos;
+ 						while(pos>videogames.size()){
+ 							cout << "ingrese la posicion que desea eliminar:"<< endl;
+ 							cin >> pos;
+ 						}
+ 						videogames.erase (videogames.begin()+(pos-1));
+ 					}
+ 					cout << "desea continuar eliminando S/N:" << endl;
+ 					cin >> opeliminar;
+ 					if (opeliminar=='n'|| opeliminar=='N'){
+ 						eliminar=false;
+ 					}
+ 				}
+ 				
  			}// fin de if de opaccion ==3
  			
 
@@ -582,12 +621,14 @@ int main(){//inicio del main
 				else if (opaccion=='2'){// inicio if de opaccion==2
 					vector<consolas*> vconsolas;
 					vector <videojuegos*> vvideojuegos;
+					string nombrecliente;
 					bool validateventa = true;
-					while(validateventa){// inicio while validate ventas
-						string nombrecliente;
-						string nomusuario= selluser->getnombre();
-						cout << "ingrese el nombre del cliente: "<< endl;
+					cout << "ingrese el nombre del cliente: "<< endl;
 						cin >> nombrecliente;
+					while(validateventa){// inicio while validate ventas
+						
+						string nomusuario= selluser->getnombre();
+						
 						double subtotal=0;
 						
 						string tipocompra;
