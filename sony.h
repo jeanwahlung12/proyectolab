@@ -5,6 +5,6 @@ using namespace std;
 
 class sony : public consolas{
 	public:
-		sony(int,string,int,int);
+		sony(int,string,int,int,double);
 		~sony();
 };

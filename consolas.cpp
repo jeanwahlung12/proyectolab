@@ -7,13 +7,15 @@ consolas:: consolas(){
 	modelo="";
 	estado=0;
 	numserie=0;
+	precio =0;
 }
 
-consolas:: consolas(int ano, string model,int estad,int num){
+consolas:: consolas(int ano, string model,int estad,int num,double prize){
 	anosalida=ano;
 	modelo=model;
 	estado = estad;
 	numserie = num;
+	precio = prize;
 }
 
 void consolas::setanosalida(int anio){
@@ -61,4 +63,11 @@ int consolas::getnumserie(){
 	return numserie;
 }
 
+void consolas::setprecio(double num){
+	precio = num;
+}
+
+double consolas::getprecio(){
+	return precio;
+}
 	

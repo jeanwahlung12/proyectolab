@@ -6,6 +6,6 @@ using namespace std;
 
 class microsoft : public consolas{
 	public:
-		microsoft(int,string,int,int );
+		microsoft(int,string,int,int,double);
 		~microsoft();
 };
