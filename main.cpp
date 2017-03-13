@@ -15,6 +15,7 @@
 #include "nintendojuegos.h"
 #include "sega.h"
 #include "nintendo.h"
+#include <string.h>
 #include "konami.h"
 #include "sony.h"
 #include "microsoft.h"
@@ -28,28 +29,51 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 void creardirectorio();//crea carpeta de ventas
+void guardarconsola(consolas*);
 void creararchivo(venta*,int ,int);//crea un archivo de ventas
 void escribir(string,venta*,int,int);//escribe en el archivo dentro de ventas
 void creardirectorio2();// crea carpeta de usuarios
 void creararchivo2(usuario*,int,int,string,string);// crea archivo de usuario
 void escribir2(string,usuario*,int,int,string,string);// escribe en el archivo de usuario
-
-
 string gethora();
 using namespace std;
+// para que el num de serie no se repita es que creo un contado de cada una y se va incrementando asi nunca se va repetir el numero
 
 int main(){//inicio del main
 	creardirectorio();
-	
+// Te voy a crear  consolas y  juegos pordefecto
 	vector<consolas*> consoles;
-
 	vector <videojuegos*> videogames;
 	usuario* adminuser = new usuarioadmin("jean","access");
-	int contnumseriejuegos= videogames.size();
-	int contnumserieconsolas= consoles.size();
-	char resp='s';
-	while(resp =='s'){//inicio del while del menu
+
+	int contnumseriejuegos= 0;// contador para que no se repita el num de serie
+	int contnumserieconsolas= 0;// contador para que no se repita el num de serie
+	bool respmenu = true;
+	videojuegos* video = new videojuegos("Assesin",2016,"Xbox One",5,"accion",9,contnumseriejuegos,40.13);
+	contnumseriejuegos++;
+	videogames.push_back(video);
+	videojuegos* video2 = new videojuegos("Monsters",2015,"Xbox 360",5,"terror",8,contnumseriejuegos,1500.2);
+	contnumseriejuegos++;
+	videogames.push_back(video);
+	videojuegos* video3 = new videojuegos("NeedForSpeedMW",2010,"Xbox One",6,"Carreras",9,contnumseriejuegos,1200.4);
+	contnumseriejuegos++;
+	videogames.push_back(video3);
+	consolas* con = new consolas(2016,"PS3",7,contnumserieconsolas,10545.32);
+	contnumserieconsolas++;
+	consoles.push_back(con);
+	consolas* con2 = new consolas(2014,"PS4",8,contnumserieconsolas,10645.32);
+	contnumserieconsolas++;
+	consoles.push_back(con2);
+	consolas* con3 = new consolas(2017,"Xbox One",10,contnumserieconsolas,10245.32);
+	contnumserieconsolas++;
+	consoles.push_back(con3);
+
+	
+	cout << "PRIMERO VENDER UN ARTICULO CREADO POR EL ADMIN O UNO YA CREADO DESPUES DE LA PRIMER VENTA TODO FUNCIONA NORMAL"<< endl;
+	cout << "Hay Consolas y videojuegos creados por defecto" << endl;
+	while(respmenu){//inicio del while del menu
 		char opusuario;
+
 		cout << "entrar como \n 1/ usuarioadmin \n 2/usuariovendedor :"<< endl;
 		cin >> opusuario;
 		if (opusuario=='1'){// inicio if del opusuario1
@@ -91,9 +115,10 @@ int main(){//inicio del main
 									else if (modelo=="3"){
 										modelo = "Xboxone";
 									}
-									cout << "el precio es :" << precio <<endl;
+									
 									microsoft* microsoftconsole = new microsoft(anosalida,modelo,estado,numserie,precio);
 									consoles.push_back (microsoftconsole);
+									guardarconsola(microsoftconsole);
 							}// fin if de marca consola ==1
 							else if(marcaconsola=='2'){// inicio de marca consola ==2
 								cout << "ingrese el modelo 1/Play Station 1 \n 2/ Play Station \n 3/Play Station 3 \n 4/ Play Station 4\n 5/ PSP \n 6/ Psvita "<< endl;
@@ -722,6 +747,14 @@ int main(){//inicio del main
 		}// fin del if de opusuario2
 		else
 			main();
+		cout << "desea continuar en el Programa ? S/N :" << endl;
+		string respmenu1;
+		cin >> respmenu1;
+		
+		if(respmenu1 == "n" || respmenu1 == "N"){
+			exit(1);
+		}
+		
 
 	}// fin del while del menu
 }//fin del main
@@ -878,7 +911,18 @@ void escribir(string ruta, venta* sell,int cont,int cont2){
 
 }
 
+void guardarconsola(consolas* con) {
 
+FILE* arch_consola = fopen("Consola.dat", "wb");
+
+    string consulta = "si";
+        fwrite( &con, sizeof(consolas*), 1, arch_consola );
+        //write <t_cliente> ( arch_cliente, cliente_aux ); //ESTA SERÍA LA FORMA INVOCANDO UN TEMPLATE
+    cout << endl;
+    cout << "La carga del archivo fue exitosa..." << endl;
+    fclose(arch_consola);
+    
+}
 
 
 
