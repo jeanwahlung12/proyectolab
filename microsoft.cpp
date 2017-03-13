@@ -6,6 +6,7 @@ microsoft::microsoft(int ano, string model,int estad,int num,double prec) : cons
 
 }
 
+
 microsoft::~microsoft(){
 
 }
