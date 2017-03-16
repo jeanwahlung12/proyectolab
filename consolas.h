@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+
 #pragma once
 using namespace std;
 class consolas{
@@ -24,4 +26,6 @@ class consolas{
 			string getmodelo();
 			int getestado();
 			int getnumserie();
+			void write(ofstream&);
+			void read(ifstream&);
 };

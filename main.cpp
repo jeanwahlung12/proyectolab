@@ -62,12 +62,30 @@ int main(){//inicio del main
 	consolas* con = new consolas(2016,"PS3",7,contnumserieconsolas,10545.32);
 	contnumserieconsolas++;
 	consoles.push_back(con);
+	ofstream consoles12;
+	consoles12.open("consolas.dat", ios::binary);
+	con->write(consoles12);
+
+	
 	consolas* con2 = new consolas(2014,"PS4",8,contnumserieconsolas,10645.32);
 	contnumserieconsolas++;
 	consoles.push_back(con2);
+	con2->write(consoles12);
+	consoles12.close();
 	consolas* con3 = new consolas(2017,"Xbox One",10,contnumserieconsolas,10245.32);
 	contnumserieconsolas++;
 	consoles.push_back(con3);
+	consolas* ps4 = new consolas();
+	consolas* ps3 = new consolas();
+	ifstream consoles1;
+	consoles1.open("consolas.dat", ios::binary);
+	ps3->read(consoles1);
+	ps4 ->read(consoles1);
+	cout << "El Precio de la ps4 es 10645.32 ;   :" << ps4->getprecio() << endl;
+
+	consoles1.close();
+	cout << " el precio de ps3 es :" << ps3->getprecio() << endl;
+
 
 	
 	cout << "PRIMERO VENDER UN ARTICULO CREADO POR EL ADMIN O UNO YA CREADO DESPUES DE LA PRIMER VENTA TODO FUNCIONA NORMAL"<< endl;
@@ -195,8 +213,8 @@ int main(){//inicio del main
 								}// fin modelo == 10
 								nintendo* nintendoconsola = new nintendo(anosalida,modelo,estado,numserie,precio);
 								consoles.push_back (nintendoconsola);
-							}// fin marca consola ==3
-
+								
+							}// fin marca consola ==3nuntendi
 						}// fin del if de agregar ==1
 						else if(agregar=='2'){//inicio del if de agregar ==2
 							string  nombre;

@@ -30,7 +30,22 @@ void consolas::setanosalida(int anio){
 void consolas::setmodelo(string model){
 	modelo=model;
 }
+ void consolas::write(ofstream& out){
+	out.write(reinterpret_cast<char*>(&anosalida), sizeof(anosalida));
+	out.write(reinterpret_cast<char*>(&modelo) , sizeof(modelo));
+	out.write(reinterpret_cast<char*>(&estado), sizeof(estado));
+	out.write(reinterpret_cast<char*>(&numserie), sizeof(numserie));
+	out.write(reinterpret_cast<char*>(&precio), sizeof(precio));
 
+}
+ void consolas::read(ifstream& in){
+	in.read(reinterpret_cast<char*>(&anosalida), sizeof(anosalida));
+	in.read(reinterpret_cast<char*>(&modelo) , sizeof(modelo));
+	in.read(reinterpret_cast<char*>(&estado), sizeof(estado));
+	in.read(reinterpret_cast<char*>(&numserie), sizeof(numserie));
+	in.read(reinterpret_cast<char*>(&precio), sizeof(precio));
+
+}
 void consolas::setestado(int estad){
 	if (estad <= 0){
 		cout <<" esta demasiado dañada no queremos cosas dañadas en nuestra tienda" << endl;
@@ -71,3 +86,5 @@ double consolas::getprecio(){
 	return precio;
 }
 	
+
+
